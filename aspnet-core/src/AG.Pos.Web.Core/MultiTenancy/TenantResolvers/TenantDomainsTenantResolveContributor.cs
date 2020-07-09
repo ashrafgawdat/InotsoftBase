@@ -1,37 +1,28 @@
 ﻿using System;
 using System.Linq;
 using Abp.Dependency;
-using Abp.Domain.Repositories;
-using Abp.Domain.Uow;
 using Abp.Extensions;
 using Abp.MultiTenancy;
-using Abp.Text;
 using Abp.Web.MultiTenancy;
 using AG.Pos.MultiTenancy;
 using Microsoft.AspNetCore.Http;
 
-namespace AG.Pos.Web.TenantResolvers
+namespace AG.Pos.Web.MultiTenancy
 {
     public class TenantDomainsTenantResolveContributor : ITenantResolveContributor, ITransientDependency
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IWebMultiTenancyConfiguration _multiTenancyConfiguration;
-        private readonly ITenantStore _tenantStore;
-        private readonly IRepository<Tenant> _tenantRepository;
-        private readonly IUnitOfWorkManager _unitOfWorkManager;
+        private readonly IAllowedDomainRepository _allowedDomainRepository;
 
         public TenantDomainsTenantResolveContributor(
             IHttpContextAccessor httpContextAccessor,
             IWebMultiTenancyConfiguration multiTenancyConfiguration,
-            ITenantStore tenantStore,
-            IRepository<Tenant> tenantRepository,
-            IUnitOfWorkManager unitOfWorkManager)
+            IAllowedDomainRepository allowedDomainRepository)
         {
             _httpContextAccessor = httpContextAccessor;
             _multiTenancyConfiguration = multiTenancyConfiguration;
-            _tenantStore = tenantStore;
-            _tenantRepository = tenantRepository;
-            _unitOfWorkManager = unitOfWorkManager;
+            _allowedDomainRepository = allowedDomainRepository;
         }
 
         public int? ResolveTenantId()
@@ -43,9 +34,9 @@ namespace AG.Pos.Web.TenantResolvers
                 {
                     Uri myUri = new Uri(originDomain);
                     string hostDomain = myUri.Host;
-                    var tenant = _tenantRepository.FirstOrDefault(e => e.Domains.Any(d => d.DomainName.Trim().Equals(hostDomain, StringComparison.InvariantCultureIgnoreCase)));
-                    if (tenant != null)
-                        return tenant.Id;
+                    var domain = _allowedDomainRepository.Find(hostDomain);
+                    if (domain != null)
+                        return domain.TenantId;
                 }
             }
             return null;

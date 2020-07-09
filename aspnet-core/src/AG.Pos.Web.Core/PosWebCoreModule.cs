@@ -26,7 +26,7 @@ using AG.Pos.Web.Authentication.JwtBearer;
 using AG.Pos.Web.Authentication.TwoFactor;
 using AG.Pos.Web.Chat.SignalR;
 using AG.Pos.Web.Configuration;
-using AG.Pos.Web.TenantResolvers;
+using AG.Pos.Web.MultiTenancy;
 
 namespace AG.Pos.Web
 {

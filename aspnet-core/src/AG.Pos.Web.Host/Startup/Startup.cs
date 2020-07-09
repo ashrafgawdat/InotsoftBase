@@ -51,6 +51,8 @@ using AG.Pos.Web.IdentityServer;
 using AG.Pos.Web.Swagger;
 using ILogger = Microsoft.Extensions.Logging.ILogger;
 using ILoggerFactory = Microsoft.Extensions.Logging.ILoggerFactory;
+using Microsoft.AspNetCore.Cors.Infrastructure;
+using AG.Pos.Web.MultiTenancy;
 
 namespace AG.Pos.Web.Startup
 {
@@ -72,31 +74,13 @@ namespace AG.Pos.Web.Startup
             //MVC
             services.AddMvc(options =>
             {
-                options.Filters.Add(new CorsAuthorizationFilterFactory(DefaultCorsPolicyName));
+                options.Filters.Add(new CorsAuthorizationFilterFactory(AppConsts.AllowedDomainsCorsPolicyName));
             }).SetCompatibilityVersion(CompatibilityVersion.Version_2_1); ;
 
             services.AddSignalR(options => { options.EnableDetailedErrors = true; });
 
-            //Configure CORS for angular2 UI
-            services.AddCors(options =>
-            {
-                options.AddPolicy(DefaultCorsPolicyName, builder =>
-                {
-                    //App:CorsOrigins in appsettings.json can contain more than one address with splitted by comma.
-                    builder
-                        .WithOrigins(
-                            // App:CorsOrigins in appsettings.json can contain more than one address separated by comma.
-                            _appConfiguration["App:CorsOrigins"]
-                                .Split(",", StringSplitOptions.RemoveEmptyEntries)
-                                .Select(o => o.RemovePostFix("/"))
-                                .ToArray()
-                        )
-                        .SetIsOriginAllowedToAllowWildcardSubdomains()
-                        .AllowAnyHeader()
-                        .AllowAnyMethod()
-                        .AllowCredentials();
-                });
-            });
+            services.AddCors();
+            services.AddSingleton<ICorsPolicyProvider, AllowedDomainsCorsPolicyProvider>();
 
             IdentityRegistrar.Register(services);
             AuthConfigurer.Configure(services, _appConfiguration);
@@ -151,7 +135,7 @@ namespace AG.Pos.Web.Startup
                 options.UseAbpRequestLocalization = false; //used below: UseAbpRequestLocalization
             });
 
-            app.UseCors(DefaultCorsPolicyName); //Enable CORS!
+            app.UseCors(AppConsts.AllowedDomainsCorsPolicyName);
 
             app.UseAuthentication();
             app.UseJwtTokenMiddleware();

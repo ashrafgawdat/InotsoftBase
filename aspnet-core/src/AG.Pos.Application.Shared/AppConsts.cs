@@ -28,9 +28,20 @@
 
         public static string UserIdentifier = "user_identifier";
 
+        public const string AllowedDomainsCorsPolicyName = "AllowedDomainsCorsPolicy";
+
         public const string ThemeDefault = "default";
         public const string Theme2 = "theme2";
         public const string Theme8 = "theme8";
         public const string Theme11 = "theme11";
+
+        public class Cache
+        {
+            public class AllowedDomains
+            {
+                public const string Key = "Cache.AllowedDomains.Key";
+                public const int CacheDurationInSeconds = 10 * 60;
+            }
+        }
     }
 }

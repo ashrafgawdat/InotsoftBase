@@ -15,7 +15,7 @@ namespace AG.Pos.EntityFrameworkCore
 {
     public class PosDbContext : AbpZeroDbContext<Tenant, Role, User, PosDbContext>, IAbpPersistedGrantDbContext
     {
-        public virtual DbSet<AllowedDomain> TenantDomains { get; set; }
+        public virtual DbSet<AllowedDomain> AllowedDomains { get; set; }
 
         /* Define an IDbSet for each entity of the application */
 
