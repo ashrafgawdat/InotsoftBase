@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Injector, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Injector, Output, ViewChild, ViewEncapsulation } from '@angular/core';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import {
     CommonLookupServiceProxy, CreateTenantInput,
@@ -11,7 +11,9 @@ import { finalize } from 'rxjs/operators';
 
 @Component({
     selector: 'createTenantModal',
-    templateUrl: './create-tenant-modal.component.html'
+    templateUrl: './create-tenant-modal.component.html',
+    styles: ['.k-list-container .k-nodata {display: none;}'],
+    encapsulation: ViewEncapsulation.None
 })
 export class CreateTenantModalComponent extends AppComponentBase {
 

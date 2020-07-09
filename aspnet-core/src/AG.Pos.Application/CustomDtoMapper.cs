@@ -33,6 +33,7 @@ using AG.Pos.MultiTenancy.Payments.Dto;
 using AG.Pos.Notifications.Dto;
 using AG.Pos.Organizations.Dto;
 using AG.Pos.Sessions.Dto;
+using System.Linq;
 
 namespace AG.Pos
 {
@@ -101,7 +102,10 @@ namespace AG.Pos
             configuration.CreateMap<Tenant, RecentTenant>();
             configuration.CreateMap<Tenant, TenantLoginInfoDto>();
             configuration.CreateMap<Tenant, TenantListDto>();
-            configuration.CreateMap<TenantEditDto, Tenant>().ReverseMap();
+            configuration.CreateMap<TenantEditDto, Tenant>()
+                .ForMember(t => t.Domains, options => options.MapFrom(dto => dto.DomainNames == null ? null : dto.DomainNames.Select(d => new AllowedDomain { DomainName = d, IsActive = true })));
+            configuration.CreateMap<Tenant, TenantEditDto>()
+                .ForMember(dto => dto.DomainNames, options => options.MapFrom(tenant => tenant.Domains == null ? null : tenant.Domains.Select(t => t.DomainName)));
             configuration.CreateMap<CurrentTenantInfoDto, Tenant>().ReverseMap();
 
             //User

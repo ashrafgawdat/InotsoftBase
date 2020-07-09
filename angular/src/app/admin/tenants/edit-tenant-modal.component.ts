@@ -1,4 +1,4 @@
-import { Component, ElementRef, EventEmitter, Injector, Output, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Injector, Output, ViewChild, ViewEncapsulation } from '@angular/core';
 import { AppComponentBase } from '@shared/common/app-component-base';
 import { CommonLookupServiceProxy, SubscribableEditionComboboxItemDto, TenantEditDto, TenantServiceProxy } from '@shared/service-proxies/service-proxies';
 import * as _ from 'lodash';
@@ -8,7 +8,9 @@ import { finalize } from 'rxjs/operators';
 
 @Component({
     selector: 'editTenantModal',
-    templateUrl: './edit-tenant-modal.component.html'
+    templateUrl: './edit-tenant-modal.component.html',
+    styles: ['.k-list-container .k-nodata {display: none;}'],
+    encapsulation: ViewEncapsulation.None
 })
 export class EditTenantModalComponent extends AppComponentBase {
 

@@ -23,6 +23,7 @@ using Abp.Runtime.Session;
 using Abp.UI;
 using Microsoft.EntityFrameworkCore;
 using AG.Pos.MultiTenancy.Payments;
+using System.Collections.Generic;
 
 namespace AG.Pos.MultiTenancy
 {
@@ -44,6 +45,7 @@ namespace AG.Pos.MultiTenancy
         private readonly IPasswordHasher<User> _passwordHasher;
         private readonly IRepository<SubscriptionPayment, long> _subscriptionPaymentRepository;
         private readonly IRepository<SubscribableEdition> _subscribableEditionRepository;
+        private readonly IRepository<AllowedDomain> _tenantDomainRepository;
 
         public TenantManager(
             IRepository<Tenant> tenantRepository,
@@ -60,7 +62,8 @@ namespace AG.Pos.MultiTenancy
             IAbpZeroDbMigrator abpZeroDbMigrator,
             IPasswordHasher<User> passwordHasher,
             IRepository<SubscriptionPayment, long> subscriptionPaymentRepository,
-            IRepository<SubscribableEdition> subscribableEditionRepository) : base(
+            IRepository<SubscribableEdition> subscribableEditionRepository,
+            IRepository<AllowedDomain> tenantDomainRepository) : base(
                 tenantRepository,
                 tenantFeatureRepository,
                 editionManager,
@@ -80,6 +83,7 @@ namespace AG.Pos.MultiTenancy
             _passwordHasher = passwordHasher;
             _subscriptionPaymentRepository = subscriptionPaymentRepository;
             _subscribableEditionRepository = subscribableEditionRepository;
+            _tenantDomainRepository = tenantDomainRepository;
         }
 
         public async Task<int> CreateWithAdminUserAsync(
@@ -94,7 +98,8 @@ namespace AG.Pos.MultiTenancy
             bool sendActivationEmail,
             DateTime? subscriptionEndDate,
             bool isInTrialPeriod,
-            string emailActivationLink)
+            string emailActivationLink,
+            IList<string> domainNames = null)
         {
             int newTenantId;
             long newAdminId;
@@ -122,6 +127,13 @@ namespace AG.Pos.MultiTenancy
                 //We are working entities of new tenant, so changing tenant filter
                 using (_unitOfWorkManager.Current.SetTenantId(tenant.Id))
                 {
+                    if (domainNames != null)
+                    {
+                        foreach (var domainName in domainNames)
+                        {
+                            await _tenantDomainRepository.InsertAsync(new AllowedDomain { DomainName = domainName.Trim().ToLowerInvariant(), IsActive = true });
+                        }
+                    }
                     //Create static roles for new tenant
                     CheckErrors(await _roleManager.CreateStaticRoles(tenant.Id));
                     await _unitOfWorkManager.Current.SaveChangesAsync(); //To get static role ids
@@ -195,6 +207,37 @@ namespace AG.Pos.MultiTenancy
             }
 
             return newTenantId;
+        }
+
+        public async override Task<Tenant> GetByIdAsync(int id)
+        {
+            var tenant = await base.GetByIdAsync(id);
+
+            //Changing tenant filter
+            using (_unitOfWorkManager.Current.SetTenantId(id))
+            {
+                tenant.Domains = await _tenantDomainRepository.GetAllListAsync(e => e.IsActive);
+            }
+
+            return tenant;
+        }
+
+        public async override Task UpdateAsync(Tenant tenant)
+        {
+            await base.UpdateAsync(tenant);
+
+            if (tenant.Domains == null) return;
+
+            //Changing tenant filter
+            using (_unitOfWorkManager.Current.SetTenantId(tenant.Id))
+            {
+                var existingDomains = await _tenantDomainRepository.GetAllListAsync();
+                var deleteDomains = existingDomains.Where(e => !tenant.Domains.Select(d => d.DomainName.Trim().ToLowerInvariant()).Contains(e.DomainName.Trim().ToLowerInvariant())).ToList();
+                var newDomains = tenant.Domains.Where(e => !existingDomains.Select(d => d.DomainName.Trim().ToLowerInvariant()).Contains(e.DomainName.Trim().ToLowerInvariant())).ToList();
+
+                deleteDomains.ForEach(d => _tenantDomainRepository.Delete(d));
+                newDomains.ForEach(d => _tenantDomainRepository.Insert(d));
+            }
         }
 
         public async Task CheckEditionAsync(int? editionId, bool isInTrialPeriod)

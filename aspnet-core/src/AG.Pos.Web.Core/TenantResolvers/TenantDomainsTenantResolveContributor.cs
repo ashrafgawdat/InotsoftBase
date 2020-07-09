@@ -43,7 +43,7 @@ namespace AG.Pos.Web.TenantResolvers
                 {
                     Uri myUri = new Uri(originDomain);
                     string hostDomain = myUri.Host;
-                    var tenant = _tenantRepository.FirstOrDefault(e => e.Domains.Any(d => d.DomainName.Contains(hostDomain)));
+                    var tenant = _tenantRepository.FirstOrDefault(e => e.Domains.Any(d => d.DomainName.Trim().Equals(hostDomain, StringComparison.InvariantCultureIgnoreCase)));
                     if (tenant != null)
                         return tenant.Id;
                 }

@@ -17,7 +17,7 @@ namespace AG.Pos.Migrator
 
         public PosMigratorModule(PosEntityFrameworkCoreModule abpZeroTemplateEntityFrameworkCoreModule)
         {
-            abpZeroTemplateEntityFrameworkCoreModule.SkipDbSeed = true;
+            abpZeroTemplateEntityFrameworkCoreModule.SkipDbSeed = false;
 
             _appConfiguration = AppConfigurations.Get(
                 typeof(PosMigratorModule).GetAssembly().GetDirectoryPathOrNull()

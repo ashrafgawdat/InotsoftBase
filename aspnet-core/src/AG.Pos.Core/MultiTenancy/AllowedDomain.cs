@@ -5,10 +5,10 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AG.Pos.MultiTenancy
 {
-    [Table("TenantDomains")]
-    public class TenantDomain : FullAuditedEntity, IMustHaveTenant
+    [Table("AllowedDomains")]
+    public class AllowedDomain : FullAuditedEntity, IMayHaveTenant
     {
-        public int TenantId { get; set; }
+        public int? TenantId { get; set; }
 
         [Required]
         public virtual string DomainName { get; set; }

@@ -126,6 +126,16 @@
                         </label>
                     </div>
 
+                    <div class="form-group">
+                        <label for="Domains">{{l("Domains")}} *</label>         
+                        <kendo-multiselect
+                        [data]="[]"
+                        [(ngModel)]="tenant.domainNames"
+                        [allowCustom]="true"
+                        id="Domains" name="Domains">
+                      </kendo-multiselect>
+                    </div>
+
                     <div class="m-checkbox-list">
                         <label for="CreateTenant_ShouldChangePasswordOnNextLogin" class="m-checkbox">
                             <input id="CreateTenant_ShouldChangePasswordOnNextLogin" type="checkbox" name="ShouldChangePasswordOnNextLogin" [(ngModel)]="tenant.shouldChangePasswordOnNextLogin">

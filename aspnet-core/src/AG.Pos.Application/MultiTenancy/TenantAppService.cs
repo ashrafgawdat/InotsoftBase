@@ -64,7 +64,8 @@ namespace AG.Pos.MultiTenancy
                 input.SendActivationEmail,
                 input.SubscriptionEndDateUtc?.ToUniversalTime(),
                 input.IsInTrialPeriod,
-                AppUrlService.CreateEmailActivationUrlFormat(input.TenancyName)
+                AppUrlService.CreateEmailActivationUrlFormat(input.TenancyName),
+                input.DomainNames
             );
         }
 

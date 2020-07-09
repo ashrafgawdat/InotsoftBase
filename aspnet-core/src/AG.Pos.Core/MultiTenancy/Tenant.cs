@@ -20,7 +20,7 @@ namespace AG.Pos.MultiTenancy
 
         //Can add application specific tenant properties here
 
-        public ICollection<TenantDomain> Domains { get; set; }
+        public ICollection<AllowedDomain> Domains { get; set; }
 
         public DateTime? SubscriptionEndDateUtc { get; set; }
 

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Abp.Application.Services.Dto;
 using Abp.MultiTenancy;
@@ -24,5 +25,7 @@ namespace AG.Pos.MultiTenancy.Dto
         public DateTime? SubscriptionEndDateUtc { get; set; }
 
         public bool IsInTrialPeriod { get; set; }
+
+        public IList<string> DomainNames { get; set; }
     }
 }

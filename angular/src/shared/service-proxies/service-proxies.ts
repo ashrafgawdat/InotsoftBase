@@ -15661,6 +15661,7 @@ export class CreateTenantInput implements ICreateTenantInput {
     isActive!: boolean | undefined;
     subscriptionEndDateUtc!: moment.Moment | undefined;
     isInTrialPeriod!: boolean | undefined;
+    domainNames!: string[] | undefined;
 
     constructor(data?: ICreateTenantInput) {
         if (data) {
@@ -15684,6 +15685,11 @@ export class CreateTenantInput implements ICreateTenantInput {
             this.isActive = data["isActive"];
             this.subscriptionEndDateUtc = data["subscriptionEndDateUtc"] ? moment(data["subscriptionEndDateUtc"].toString()) : <any>undefined;
             this.isInTrialPeriod = data["isInTrialPeriod"];
+            if (data["domainNames"] && data["domainNames"].constructor === Array) {
+                this.domainNames = [];
+                for (let item of data["domainNames"])
+                    this.domainNames.push(item);
+            }
         }
     }
 
@@ -15707,6 +15713,11 @@ export class CreateTenantInput implements ICreateTenantInput {
         data["isActive"] = this.isActive;
         data["subscriptionEndDateUtc"] = this.subscriptionEndDateUtc ? this.subscriptionEndDateUtc.toISOString() : <any>undefined;
         data["isInTrialPeriod"] = this.isInTrialPeriod;
+        if (this.domainNames && this.domainNames.constructor === Array) {
+            data["domainNames"] = [];
+            for (let item of this.domainNames)
+                data["domainNames"].push(item);
+        }
         return data; 
     }
 }
@@ -15723,6 +15734,7 @@ export interface ICreateTenantInput {
     isActive: boolean | undefined;
     subscriptionEndDateUtc: moment.Moment | undefined;
     isInTrialPeriod: boolean | undefined;
+    domainNames: string[] | undefined;
 }
 
 export class TenantEditDto implements ITenantEditDto {
@@ -15733,6 +15745,7 @@ export class TenantEditDto implements ITenantEditDto {
     isActive!: boolean | undefined;
     subscriptionEndDateUtc!: moment.Moment | undefined;
     isInTrialPeriod!: boolean | undefined;
+    domainNames!: string[] | undefined;
     id!: number | undefined;
 
     constructor(data?: ITenantEditDto) {
@@ -15753,6 +15766,11 @@ export class TenantEditDto implements ITenantEditDto {
             this.isActive = data["isActive"];
             this.subscriptionEndDateUtc = data["subscriptionEndDateUtc"] ? moment(data["subscriptionEndDateUtc"].toString()) : <any>undefined;
             this.isInTrialPeriod = data["isInTrialPeriod"];
+            if (data["domainNames"] && data["domainNames"].constructor === Array) {
+                this.domainNames = [];
+                for (let item of data["domainNames"])
+                    this.domainNames.push(item);
+            }
             this.id = data["id"];
         }
     }
@@ -15773,6 +15791,11 @@ export class TenantEditDto implements ITenantEditDto {
         data["isActive"] = this.isActive;
         data["subscriptionEndDateUtc"] = this.subscriptionEndDateUtc ? this.subscriptionEndDateUtc.toISOString() : <any>undefined;
         data["isInTrialPeriod"] = this.isInTrialPeriod;
+        if (this.domainNames && this.domainNames.constructor === Array) {
+            data["domainNames"] = [];
+            for (let item of this.domainNames)
+                data["domainNames"].push(item);
+        }
         data["id"] = this.id;
         return data; 
     }
@@ -15786,6 +15809,7 @@ export interface ITenantEditDto {
     isActive: boolean | undefined;
     subscriptionEndDateUtc: moment.Moment | undefined;
     isInTrialPeriod: boolean | undefined;
+    domainNames: string[] | undefined;
     id: number | undefined;
 }
 

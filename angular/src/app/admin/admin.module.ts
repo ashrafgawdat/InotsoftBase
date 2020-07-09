@@ -66,6 +66,8 @@ import { TextMaskModule } from 'angular2-text-mask';
 import { ImageCropperModule } from 'ngx-image-cropper';
 import { NgxBootstrapDatePickerConfigService } from 'assets/ngx-bootstrap/ngx-bootstrap-datepicker-config.service';
 
+import { DropDownsModule } from '@progress/kendo-angular-dropdowns';
+
 @NgModule({
     imports: [
         FormsModule,
@@ -93,7 +95,8 @@ import { NgxBootstrapDatePickerConfigService } from 'assets/ngx-bootstrap/ngx-bo
         NgxChartsModule,
         CountoModule,
         TextMaskModule,
-        ImageCropperModule
+        ImageCropperModule,
+        DropDownsModule
     ],
     declarations: [
         UsersComponent,
