@@ -26,6 +26,7 @@ using AG.Pos.Web.Authentication.JwtBearer;
 using AG.Pos.Web.Authentication.TwoFactor;
 using AG.Pos.Web.Chat.SignalR;
 using AG.Pos.Web.Configuration;
+using AG.Pos.Web.TenantResolvers;
 
 namespace AG.Pos.Web
 {
@@ -50,6 +51,9 @@ namespace AG.Pos.Web
 
         public override void PreInitialize()
         {
+            //Configuration.MultiTenancy.Resolvers.Clear();
+            Configuration.MultiTenancy.Resolvers.Add<TenantDomainsTenantResolveContributor>();
+
             //Set default connection string
             Configuration.DefaultNameOrConnectionString = _appConfiguration.GetConnectionString(
                 PosConsts.ConnectionStringName

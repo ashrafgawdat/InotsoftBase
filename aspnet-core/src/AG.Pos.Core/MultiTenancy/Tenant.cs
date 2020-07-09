@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Abp.MultiTenancy;
 using Abp.Timing;
@@ -18,6 +19,8 @@ namespace AG.Pos.MultiTenancy
         public const int MaxLogoMimeTypeLength = 64;
 
         //Can add application specific tenant properties here
+
+        public ICollection<TenantDomain> Domains { get; set; }
 
         public DateTime? SubscriptionEndDateUtc { get; set; }
 
@@ -58,10 +61,10 @@ namespace AG.Pos.MultiTenancy
             {
                 case EditionPaymentType.NewRegistration:
                 case EditionPaymentType.BuyNow:
-                {
-                    SubscriptionEndDateUtc = Clock.Now.ToUniversalTime().AddDays((int)paymentPeriodType);
-                    break;
-                }
+                    {
+                        SubscriptionEndDateUtc = Clock.Now.ToUniversalTime().AddDays((int)paymentPeriodType);
+                        break;
+                    }
                 case EditionPaymentType.Extend:
                     ExtendSubscriptionDate(paymentPeriodType);
                     break;
@@ -75,7 +78,7 @@ namespace AG.Pos.MultiTenancy
                     throw new ArgumentException();
             }
         }
-        
+
         private void ExtendSubscriptionDate(PaymentPeriodType paymentPeriodType)
         {
             if (SubscriptionEndDateUtc == null)
@@ -88,7 +91,7 @@ namespace AG.Pos.MultiTenancy
                 SubscriptionEndDateUtc = Clock.Now.ToUniversalTime();
             }
 
-            SubscriptionEndDateUtc = SubscriptionEndDateUtc.Value.AddDays((int) paymentPeriodType);
+            SubscriptionEndDateUtc = SubscriptionEndDateUtc.Value.AddDays((int)paymentPeriodType);
         }
 
         private bool IsSubscriptionEnded()
