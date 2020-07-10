@@ -115,19 +115,19 @@ Backup*/
 UpgradeLog*.XML
 src/.vs/config/applicationhost.config
 
-src/AG.Pos.Web.Host/wwwroot/Temp/Downloads
-src/AG.Pos.Web.Mvc/wwwroot/Temp/Downloads
-src/AG.Pos.Web.Mvc/Properties/PublishProfiles
-src/AG.Pos.Web.Mvc/node_modules
-src/AG.Pos.Web.Mvc/wwwroot/lib
-src/AG.Pos.Web.Mvc/wwwroot/view-resources/Views/_Bundles
-src/AG.Pos.Web.Mvc/wwwroot/view-resources/Areas/App/Views/_Bundles
-src/AG.Pos.Web.Mvc/wwwroot/view-resources/**/*.min.*
-src/AG.Pos.Web.Mvc/wwwroot/Common/**/*.min.*
-src/AG.Pos.Web.Mvc/package-lock.json
+src/Inorsoft.Base.Web.Host/wwwroot/Temp/Downloads
+src/Inorsoft.Base.Web.Mvc/wwwroot/Temp/Downloads
+src/Inorsoft.Base.Web.Mvc/Properties/PublishProfiles
+src/Inorsoft.Base.Web.Mvc/node_modules
+src/Inorsoft.Base.Web.Mvc/wwwroot/lib
+src/Inorsoft.Base.Web.Mvc/wwwroot/view-resources/Views/_Bundles
+src/Inorsoft.Base.Web.Mvc/wwwroot/view-resources/Areas/App/Views/_Bundles
+src/Inorsoft.Base.Web.Mvc/wwwroot/view-resources/**/*.min.*
+src/Inorsoft.Base.Web.Mvc/wwwroot/Common/**/*.min.*
+src/Inorsoft.Base.Web.Mvc/package-lock.json
 
-src/AG.Pos.Web.Public/wwwroot/lib
-src/AG.Pos.Web.Public/wwwroot/Common/_Bundles
-src/AG.Pos.Web.Public/wwwroot/view-resources/Views/_Bundles
-src/AG.Pos.Web.Public/wwwroot/view-resources/**/*.min.*
-src/AG.Pos.Web.Public/wwwroot/Common/**/*.min.*
+src/Inorsoft.Base.Web.Public/wwwroot/lib
+src/Inorsoft.Base.Web.Public/wwwroot/Common/_Bundles
+src/Inorsoft.Base.Web.Public/wwwroot/view-resources/Views/_Bundles
+src/Inorsoft.Base.Web.Public/wwwroot/view-resources/**/*.min.*
+src/Inorsoft.Base.Web.Public/wwwroot/Common/**/*.min.*

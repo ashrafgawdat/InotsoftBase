@@ -3,8 +3,8 @@
 $buildFolder = (Get-Item -Path "./" -Verbose).FullName
 $slnFolder = Join-Path $buildFolder "../"
 $outputFolder = Join-Path $buildFolder "outputs"
-$webMvcFolder = Join-Path $slnFolder "src/AG.Pos.Web.Mvc"
-$webPublicFolder = Join-Path $slnFolder "src/AG.Pos.Web.Public"
+$webMvcFolder = Join-Path $slnFolder "src/Inorsoft.Base.Web.Mvc"
+$webPublicFolder = Join-Path $slnFolder "src/Inorsoft.Base.Web.Public"
 
 ## CLEAR ######################################################################
 
